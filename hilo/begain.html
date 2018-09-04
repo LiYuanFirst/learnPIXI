@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/hilo-standalone.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		var gameWidth = 550;
+		var gameHeight = 400;
+		var stageScaleX = innerWidth/gameWidth;
+		var stageScaleY = innerHeight/gameHeight;
+		
+		var stage = new Hilo.Stage({
+		    container:document.body,
+		    width:gameWidth,
+		    height:gameHeight,
+		    scaleX:stageScaleX,
+		    scaleY:stageScaleY
+		});
+		
+		window.onresize = function(){
+		    stage.scaleX = innerWidth/gameWidth;
+		    stage.scaleY = innerHeight/gameHeight;
+		    stage.resize(gameWidth, gameHeight, true);
+		};
+	</script>
+</html>
