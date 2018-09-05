@@ -9,12 +9,68 @@
 	</body>
 	<script src="js/pixi.min.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
-		let type = "WebGL"
-	    if(!PIXI.utils.isWebGLSupported()){
-	      type = "canvas"
-	    }
-		let app = new PIXI.Application({width: 256, height: 256});
-	    PIXI.utils.sayHello(type)
-	    document.body.appendChild(app.view);
+		let Application = PIXI.Application,
+		    loader = PIXI.loader,
+		    resources = PIXI.loader.resources,
+		    TextureCache = PIXI.utils.TextureCache,
+		    Sprite = PIXI.Sprite,
+    		Rectangle = PIXI.Rectangle;
+
+		let app = new Application({
+			width:256,
+			height:256,
+			antialias: true, //抗锯齿
+		})
+		document.body.appendChild(app.view);
+		loader
+		  	.add([
+		  		"assets/cat.png",
+		  		"assets/carrot.png",
+		  		"assets/bird.png"
+		  	])
+		  	.on('progress',loadProgressHandler)
+		  	.load(setup);
+		function loadProgressHandler(loader, resource) {
+		  console.log("loading: " + resource.url);
+		  console.log("progress: " + loader.progress + "%");
+		}
+		function setup() {
+		  	let cat = new Sprite(
+		    	resources["assets/cat.png"].texture
+		  	)
+//		  	cat.width = 80;
+//			cat.height = 120;
+		  	cat.x = 96;
+			cat.y = 96;
+  			
+			app.stage.addChild(cat);
+			
+			app.ticker.add(function(){
+				//cat.x += 1;
+			});
+			cat.rotation = 0.5;
+//			cat.anchor.x = 0.5;
+//			cat.anchor.y = 0.5;
+//			cat.scale.set(0.5, 0.5);
+			let texture = TextureCache["assets/bird.png"];
+			let rectangle = new Rectangle(0, 0, 80, 60);
+			texture.frame = rectangle;
+			let rocket = new Sprite(texture);
+			rocket.x = 32;
+  			rocket.y = 32;
+
+			
+			app.stage.addChild(rocket);
+//			setTimeout(function(){
+//				
+//			
+//				cat.texture = PIXI.utils.TextureCache["assets/carrot.png"];
+//				//app.stage.removeChild(cat)
+////				cat.visible = false;
+//			},1500)
+		}
+		function gameLoop(delta){
+			cat.x += 1;
+		}
 	</script>
 </html>
