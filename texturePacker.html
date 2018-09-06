@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script src="js/pixi.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		let windowHeight = window.innerHeight,
+        	windowWidth = window.innerWidth;
+		let Application = PIXI.Application,
+			Container = PIXI.Container,
+			loader = PIXI.loader,
+			resources = PIXI.loader.resources,
+			TextureCache = PIXI.utils.TextureCache,
+			Sprite = PIXI.Sprite,
+			Rectangle = PIXI.Rectangle;
+		let app = new Application({
+			width: windowWidth,
+			height:windowHeight,
+			antialias:true,
+			transparent:false,
+			resolution:1
+		});
+		document.body.appendChild(app.view);
+		let dungeon, explorer, treasure, id;
+		loader
+			.add("images/ss.json")
+			.load(setup);
+		function setup(){
+			let dungeonTexture = TextureCache["dungeon.png"];
+			dungeon = new Sprite(dungeonTexture);
+			app.stage.addChild(dungeon);
+
+		  	explorer = new Sprite(
+			    resources["images/ss.json"].textures["explorer.png"]
+			);
+			explorer.x = 68;
+			
+			//Center the explorer vertically
+			explorer.y = app.stage.height / 2 - explorer.height / 2;
+			app.stage.addChild(explorer);
+			
+			id = PIXI.loader.resources["images/ss.json"].textures;
+
+		  	//Make the treasure box using the alias
+		  	treasure = new Sprite(id["treasure.png"]);
+		  	app.stage.addChild(treasure);
+		  	treasure.x = app.stage.width - treasure.width - 48;
+  			treasure.y = app.stage.height / 2 - treasure.height / 2;
+  			app.stage.addChild(treasure);
+		}
+	</script>
+</html>

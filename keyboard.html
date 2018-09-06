@@ -73,7 +73,7 @@
 			
 			//Down
 			down.press = () => {
-			    cat.vy = 5;
+			    cat.vy = 1;
 			    cat.vx = 0;
 			};
 			down.release = () => {
@@ -107,6 +107,7 @@
 			key.press = undefined;
 			key.release = undefined;
 			key.downHandler = event => {
+				console.log(event)
 				if(event.keyCode === key.code){
 					if(key.isUp && key.press) key.press();
 					key.isDown = true;
