@@ -31,7 +31,7 @@
 		function setup(){
 			let id = PIXI.loader.resources["images/animals.json"].textures;
 			let cat = new Sprite(id["cat.png"]);
-			cat.position.set(16, 16);
+			cat.position.set(0, 0);
 			
 			//The hedgehog
 			let hedgehog = new Sprite(id["hedgehog.png"]);
@@ -39,9 +39,8 @@
 			
 			//The tiger
 			let tiger = new Sprite(id["tiger.png"]);
-			tiger.position.set(64, 64);
+			tiger.position.set(100, 100);
 			let animals = new Container();
-			
 			animals.addChild(cat);
 			animals.addChild(hedgehog);
 			animals.addChild(tiger);
@@ -53,9 +52,9 @@
 			console.log(hedgehog.x);
 			console.log(tiger.x);
 			console.log(tiger.getGlobalPosition());
-			console.log("两者距离1："+tiger.toLocal(tiger.position, cat).x);
-			console.log("两者距离1："+cat.toLocal(cat.position, tiger).x);
-			console.log("两者距离2："+hedgehog.toLocal(hedgehog.position, cat).x)
+			console.log(tiger.width)
+			console.log(cat.toLocal(hedgehog.position, hedgehog));
+			console.log(cat.toLocal(cat.position, tiger));
 		}
 	</script>
 </html>
