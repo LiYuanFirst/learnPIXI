@@ -4,10 +4,18 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<script src="js/pixi.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+		</style>
 	</head>
 	<body>
 	</body>
 	<script type="text/javascript">
+		let windowHeight = window.innerHeight,
+        	windowWidth = window.innerWidth;
 		let Application = PIXI.Application,
 			Container = PIXI.Container,
 			loader = PIXI.loader,
@@ -16,8 +24,8 @@
 			Sprite = PIXI.Sprite,
 			Rectangle = PIXI.Rectangle;
 		let app = new Application({
-			width:256,
-			height:256,
+			width:windowWidth,
+			height:windowHeight,
 			antialias:true,
 			transparent:false,
 			resolution:1
@@ -26,7 +34,7 @@
 		loader
 			.add("assets/cat.png")
 			.load(setup);
-		let cat,state;
+		let cat,state,roundBox;
 		function setup(){
 			cat = new Sprite(
 				resources["assets/cat.png"].texture
@@ -35,6 +43,16 @@
 			cat.vx = 0;
   			cat.vy = 0;
 			app.stage.addChild(cat);
+			
+			roundBox = new PIXI.Graphics();
+			roundBox.lineStyle(4, 0x99CCFF, 1);
+			roundBox.beginFill(0xFF9933);
+			roundBox.drawRoundedRect(0, 0, 84, 36, 10)
+			roundBox.endFill();
+			roundBox.x = 48;
+			roundBox.y = 190;
+			app.stage.addChild(roundBox);
+			
 			let left = keyboard(37),
 			    up = keyboard(38),
 			    right = keyboard(39),
@@ -84,6 +102,7 @@
 			
 			state = play;
 			app.ticker.add(delta => gameLoop(delta));
+			
 		}
 		function gameLoop(delta){
 			state(delta)
@@ -96,10 +115,18 @@
 		  		cat.y = 0
 		  	}
 		  	cat.x += cat.vx;
-  			cat.y += cat.vy
+  			cat.y += cat.vy;
+  			
 		}
 		
 		function keyboard(keyCode) {
+			if (hitTestRectangle(cat, roundBox)) {
+				console.log('yes')
+			  //There's a collision
+			} else {
+				console.log('no')
+			  //There's no collision
+			}
 			let key = {};
 			key.code = keyCode;
 			key.isDown = false;
@@ -107,7 +134,6 @@
 			key.press = undefined;
 			key.release = undefined;
 			key.downHandler = event => {
-				console.log(event)
 				if(event.keyCode === key.code){
 					if(key.isUp && key.press) key.press();
 					key.isDown = true;
@@ -132,5 +158,56 @@
 			return key;
 			
 		}
+		//The `hitTestRectangle` function
+function hitTestRectangle(r1, r2) {
+
+  //Define the variables we'll need to calculate
+  let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+
+  //hit will determine whether there's a collision
+  hit = false;
+
+  //Find the center points of each sprite
+  r1.centerX = r1.x + r1.width / 2; 
+  r1.centerY = r1.y + r1.height / 2; 
+  r2.centerX = r2.x + r2.width / 2; 
+  r2.centerY = r2.y + r2.height / 2; 
+
+  //Find the half-widths and half-heights of each sprite
+  r1.halfWidth = r1.width / 2;
+  r1.halfHeight = r1.height / 2;
+  r2.halfWidth = r2.width / 2;
+  r2.halfHeight = r2.height / 2;
+
+  //Calculate the distance vector between the sprites
+  vx = r1.centerX - r2.centerX;
+  vy = r1.centerY - r2.centerY;
+
+  //Figure out the combined half-widths and half-heights
+  combinedHalfWidths = r1.halfWidth + r2.halfWidth;
+  combinedHalfHeights = r1.halfHeight + r2.halfHeight;
+
+  //Check for a collision on the x axis
+  if (Math.abs(vx) < combinedHalfWidths) {
+
+    //A collision might be occuring. Check for a collision on the y axis
+    if (Math.abs(vy) < combinedHalfHeights) {
+
+      //There's definitely a collision happening
+      hit = true;
+    } else {
+
+      //There's no collision on the y axis
+      hit = false;
+    }
+  } else {
+
+    //There's no collision on the x axis
+    hit = false;
+  }
+
+  //`hit` will be either `true` or `false`
+  return hit;
+};
 	</script>
 </html>

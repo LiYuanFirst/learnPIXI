@@ -35,7 +35,7 @@
 			
 			//The hedgehog
 			let hedgehog = new Sprite(id["hedgehog.png"]);
-			hedgehog.position.set(32, 32);
+			hedgehog.position.set(64, 64);
 			
 			//The tiger
 			let tiger = new Sprite(id["tiger.png"]);
@@ -53,8 +53,8 @@
 			console.log(tiger.x);
 			console.log(tiger.getGlobalPosition());
 			console.log(tiger.width)
-			console.log(cat.toLocal(hedgehog.position, hedgehog));
-			console.log(cat.toLocal(cat.position, tiger));
+			console.log(cat.toLocal(tiger));
+			console.log(tiger.toLocal(cat));
 		}
 	</script>
 </html>
