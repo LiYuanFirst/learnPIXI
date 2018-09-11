@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script src="js/pixi.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = new PIXI.Application(window.innerWidth,window.innerHeight);
+		document.body.appendChild(app.view);
+		PIXI.loader
+			.add('spritesheet','images/mc.json')
+			.load(stepup);
+		function stepup(){
+			var explosionTextures = [],i;
+			for(i=0;i<26;i++){
+				var texture = PIXI.Texture.fromFrame('Explosion_Sequence_A ' + (i+1) + '.png');
+         		explosionTextures.push(texture);
+			}
+		        // create an explosion AnimatedSprite
+		        var explosion = new PIXI.extras.AnimatedSprite(explosionTextures);
+		
+		        explosion.x = Math.random() * app.screen.width;
+		        explosion.y = Math.random() * app.screen.height;
+		        explosion.anchor.set(0.5);
+		        explosion.animationSpeed = 0.2;
+		        explosion.rotation = Math.random() * Math.PI;
+		        explosion.scale.set(0.75 + Math.random() * 0.5);
+		        explosion.gotoAndPlay(Math.random() * 27);
+		        app.stage.addChild(explosion);
+		    
+			app.start();
+		}
+	</script>
+</html>
